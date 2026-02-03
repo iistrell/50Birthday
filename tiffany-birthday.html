@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiffy Turns Fifty! 🎉</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glow {
+            0%, 100% { 
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+                             0 0 30px rgba(255, 200, 0, 0.6),
+                             0 0 40px rgba(255, 100, 200, 0.4);
+            }
+            50% { 
+                text-shadow: 0 0 30px rgba(255, 255, 255, 1),
+                             0 0 50px rgba(255, 200, 0, 0.8),
+                             0 0 60px rgba(255, 100, 200, 0.6);
+            }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 200, 0, 0.5),
+                            0 0 40px rgba(255, 100, 200, 0.3);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 200, 0, 0.8),
+                            0 0 60px rgba(255, 100, 200, 0.5);
+                transform: scale(1.02);
+            }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes number-pop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.95; }
+        }
+        @keyframes fall {
+            0% { 
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.5;
+            }
+        }
+        @keyframes celebration {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+        .animate-fade-in { animation: fade-in 1s ease-out; }
+        .animate-glow { animation: glow 2s ease-in-out infinite; }
+        .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-spin-slow { animation: spin-slow 8s linear infinite; }
+        .animate-bounce-slow { animation: bounce-slow 2s ease-in-out infinite; }
+        .animate-number-pop { animation: number-pop 1s ease-in-out infinite; }
+        .animate-pulse-subtle { animation: pulse-subtle 2s ease-in-out infinite; }
+        .animate-fall { animation: fall linear infinite; }
+        .animate-celebration { animation: celebration 1s ease-in-out infinite; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script type="module">
+        // SVG Icons as functions
+        const createIcon = (path, className = "") => {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("class", className);
+            svg.setAttribute("fill", "none");
+            svg.setAttribute("stroke", "currentColor");
+            svg.setAttribute("stroke-width", "2");
+            svg.setAttribute("stroke-linecap", "round");
+            svg.setAttribute("stroke-linejoin", "round");
+            svg.setAttribute("viewBox", "0 0 24 24");
+            
+            if (Array.isArray(path)) {
+                path.forEach(p => {
+                    const pathEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                    pathEl.setAttribute("d", p);
+                    svg.appendChild(pathEl);
+                });
+            } else {
+                const pathEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                pathEl.setAttribute("d", path);
+                svg.appendChild(pathEl);
+            }
+            return svg;
+        };
+
+        const icons = {
+            trophy: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z",
+            crown: "m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14",
+            sun: ["M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41", "circle cx='12' cy='12' r='5'"],
+            star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+            sparkles: "m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3ZM5 3v4M3 5h4M6 21v-4m-2 2h4",
+            zap: "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
+            palmtree: "M13 8c0-2.76-2.46-5-5.5-5S2 5.24 2 8h11zm0 0c0 5.13 3.87 9 8.66 9H22c.83 0 1.5-.67 1.5-1.5 0-.83-.67-1.5-1.5-1.5a3 3 0 0 0-3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3zm-5 5-1.5 9 1.815.5L10 15.5 11.685 23l1.815-.5L12 13zm7 0-1.5 9 1.815.5L17 15.5 18.685 23l1.815-.5L19 13z",
+            anchor: "M12 22V8M5 12H2a10 10 0 0 0 20 0h-3m-9-8a3 3 0 1 0 6 0 3 3 0 1 0-6 0",
+            heart: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z",
+            waves: "M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1",
+            wine: "M8 22h8M7 10h10M12 15v7M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z",
+            utensils: "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7",
+            music: "M9 18V5l12-2v13M9 9l12-2M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm12-3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z",
+            gift: "M20 12v10H4V12M2 7h20v5H2zm10 15V7m0 0H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zm0 0h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"
+        };
+
+        function calculateTimeLeft() {
+            const birthday = new Date('2026-02-10T00:00:00');
+            const now = new Date();
+            const difference = birthday - now;
+
+            if (difference > 0) {
+                return {
+                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                    hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                    minutes: Math.floor((difference / 1000 / 60) % 60),
+                    seconds: Math.floor((difference / 1000) % 60)
+                };
+            }
+            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
+
+        function createConfetti() {
+            const container = document.createElement('div');
+            container.className = 'absolute inset-0 overflow-hidden pointer-events-none';
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'absolute w-3 h-3 animate-fall';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animationDelay = `${Math.random() * 5}s`;
+                confetti.style.animationDuration = `${3 + Math.random() * 4}s`;
+                confetti.style.width = `${8 + Math.random() * 8}px`;
+                confetti.style.height = `${8 + Math.random() * 8}px`;
+                
+                const colors = ['bg-yellow-300', 'bg-pink-400', 'bg-blue-400', 'bg-green-400', 'bg-purple-400'];
+                const dot = document.createElement('div');
+                dot.className = `w-full h-full rounded-full ${colors[i % 5]}`;
+                confetti.appendChild(dot);
+                container.appendChild(confetti);
+            }
+            return container;
+        }
+
+        function updateCountdown() {
+            const timeLeft = calculateTimeLeft();
+            const isCountdownOver = timeLeft.days === 0 && timeLeft.hours === 0 && 
+                                   timeLeft.minutes === 0 && timeLeft.seconds === 0;
+
+            const countdownData = [
+                { value: timeLeft.days, label: 'DAYS', gradient: 'from-pink-600 via-rose-500 to-red-500' },
+                { value: timeLeft.hours, label: 'HOURS', gradient: 'from-purple-600 via-fuchsia-500 to-pink-500' },
+                { value: timeLeft.minutes, label: 'MINUTES', gradient: 'from-blue-600 via-cyan-500 to-teal-500' },
+                { value: timeLeft.seconds, label: 'SECONDS', gradient: 'from-orange-600 via-amber-500 to-yellow-500' }
+            ];
+
+            const countdownContainer = document.getElementById('countdown-boxes');
+            if (!isCountdownOver && countdownContainer) {
+                countdownData.forEach((item, index) => {
+                    const valueEl = document.getElementById(`countdown-${index}-value`);
+                    if (valueEl) {
+                        valueEl.textContent = String(item.value).padStart(2, '0');
+                    }
+                });
+            }
+        }
+
+        // Initialize the page
+        const app = document.getElementById('app');
+        app.innerHTML = `
+            <div class="min-h-screen bg-gradient-to-br from-pink-500 via-purple-600 via-fuchsia-500 to-orange-500 p-4 flex items-center justify-center relative overflow-hidden">
+                ${createConfetti().outerHTML}
+                
+                <div class="absolute inset-0 overflow-hidden" id="bg-icons"></div>
+
+                <div class="relative z-10 max-w-4xl w-full">
+                    <div class="text-center mb-8 animate-fade-in">
+                        <div class="flex justify-center items-center gap-3 mb-4">
+                            <div class="w-14 h-14 text-yellow-300 animate-bounce-slow" id="trophy-left"></div>
+                            <h1 class="text-7xl md:text-9xl font-black text-white drop-shadow-2xl animate-glow">
+                                TIFFY TURNS FIFTY
+                            </h1>
+                            <div class="w-14 h-14 text-yellow-300 animate-bounce-slow" id="trophy-right"></div>
+                        </div>
+                        <div class="bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 p-1 rounded-2xl mb-4 animate-pulse-glow">
+                            <div class="bg-white/10 backdrop-blur-md rounded-xl px-6 py-3">
+                                <div class="flex justify-center items-center gap-3 flex-wrap">
+                                    <div class="w-8 h-8 text-yellow-300 animate-bounce" id="crown-left"></div>
+                                    <h2 class="text-3xl md:text-5xl font-black text-white drop-shadow-lg">
+                                        SINT MAARTEN EXTRAVAGANZA
+                                    </h2>
+                                    <div class="w-8 h-8 text-yellow-300 animate-bounce" id="crown-right"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-2xl md:text-3xl text-yellow-100 font-black drop-shadow-lg animate-pulse">
+                            🎂 February 10, 2026 🎂
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8" id="countdown-boxes">
+                        ${[
+                            { label: 'DAYS', gradient: 'from-pink-600 via-rose-500 to-red-500', iconId: 'sun' },
+                            { label: 'HOURS', gradient: 'from-purple-600 via-fuchsia-500 to-pink-500', iconId: 'star' },
+                            { label: 'MINUTES', gradient: 'from-blue-600 via-cyan-500 to-teal-500', iconId: 'zap' },
+                            { label: 'SECONDS', gradient: 'from-orange-600 via-amber-500 to-yellow-500', iconId: 'sparkles' }
+                        ].map((item, index) => `
+                            <div class="bg-gradient-to-br ${item.gradient} rounded-3xl p-6 md:p-8 shadow-2xl transform hover:scale-110 hover:rotate-2 transition-all duration-300 border-4 border-white animate-pulse-subtle">
+                                <div class="flex justify-center mb-2">
+                                    <div class="w-8 h-8 text-white animate-pulse" id="icon-${index}"></div>
+                                </div>
+                                <div class="text-6xl md:text-8xl font-black text-white mb-2 drop-shadow-2xl animate-number-pop" id="countdown-${index}-value">
+                                    00
+                                </div>
+                                <div class="text-xl md:text-2xl font-black text-white opacity-95">
+                                    ${item.label}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="bg-gradient-to-br from-white via-pink-50 to-purple-50 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border-4 border-yellow-400 mb-6">
+                        <div class="text-center">
+                            <div class="flex justify-center gap-3 mb-4">
+                                <div class="w-14 h-14 text-purple-600 animate-spin-slow" id="sparkles-left"></div>
+                                <div class="w-14 h-14 text-yellow-500 animate-bounce" id="crown-center"></div>
+                                <div class="w-14 h-14 text-pink-600 animate-spin-slow" id="sparkles-right"></div>
+                            </div>
+                            <h3 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-pink-600 via-purple-600 to-orange-600 bg-clip-text text-transparent mb-6 drop-shadow-lg">
+                                50 & Fabulous in Paradise!
+                            </h3>
+                            <p class="text-2xl md:text-3xl text-gray-800 mb-8 font-black">
+                                February 7-11, 2026
+                            </p>
+                            
+                            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                                <div class="bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl p-6 transform hover:scale-105 transition-transform shadow-xl border-4 border-white">
+                                    <div class="flex justify-center mb-3">
+                                        <div class="w-12 h-12 text-white animate-bounce-slow" id="anchor-icon"></div>
+                                    </div>
+                                    <h4 class="text-2xl md:text-3xl font-black text-white mb-2">
+                                        🛥️ YACHT DAY
+                                    </h4>
+                                    <p class="text-lg text-white/90 font-semibold">
+                                        9:00 AM - February 10th
+                                    </p>
+                                    <p class="text-white/80 mt-1">
+                                        Sun, water, music & celebration!
+                                    </p>
+                                </div>
+                                
+                                <div class="bg-gradient-to-br from-rose-500 to-pink-600 rounded-2xl p-6 transform hover:scale-105 transition-transform shadow-xl border-4 border-white">
+                                    <div class="flex justify-center mb-3">
+                                        <div class="w-12 h-12 text-white animate-bounce-slow" id="utensils-icon"></div>
+                                    </div>
+                                    <h4 class="text-2xl md:text-3xl font-black text-white mb-2">
+                                        🍽️ PRIVATE CHEF DINNER
+                                    </h4>
+                                    <p class="text-lg text-white/90 font-semibold">
+                                        7:00 PM - At the Villa
+                                    </p>
+                                    <p class="text-white/80 mt-1">
+                                        Dressy casual, island-chic vibes
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="bg-gradient-to-r from-purple-100 via-pink-100 to-orange-100 rounded-2xl p-6 mb-6 border-3 border-purple-300">
+                                <h4 class="text-2xl md:text-3xl font-black text-purple-900 mb-4">
+                                    🌴 Full Trip Experience 🌴
+                                </h4>
+                                
+                                <div class="text-left mb-4 bg-white/60 rounded-xl p-4">
+                                    <p class="text-base md:text-lg text-gray-800 leading-relaxed">
+                                        Hey y'all!! I'm SO excited to celebrate my 50th with my favorite people in St. Maarten 🥳🏝️
+                                        <br/>Here's the plan—some scheduled fun, some chill time, all good vibes.
+                                    </p>
+                                </div>
+                                
+                                <div class="grid gap-4 text-left">
+                                    <div class="bg-white/80 rounded-xl p-4 shadow-md">
+                                        <p class="font-black text-xl md:text-2xl text-pink-600 mb-2">SAT | FEB 7</p>
+                                        <p class="font-bold text-base md:text-lg text-gray-800 mb-1">✈️ Arrival day!</p>
+                                        <p class="text-base md:text-lg text-gray-700">
+                                            Settle into the villa, unpack, relax. Later we'll head out to the Pelican Key / Simpson Bay area for food, drinks, and sunset views 🍹🌅
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-white/80 rounded-xl p-4 shadow-md">
+                                        <p class="font-black text-xl md:text-2xl text-purple-600 mb-2">SUN | FEB 8</p>
+                                        <p class="text-base md:text-lg text-gray-700 mb-3">
+                                            <span class="font-bold">9:00 AM – ATV Tour 🚙💨</span><br/>
+                                            Island adventure time! Expect fun rides, great views, and pics.<br/>
+                                            <a href="https://landtoursxm.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                                                👉 https://landtoursxm.com
+                                            </a>
+                                        </p>
+                                        <p class="text-base md:text-lg text-gray-700 mb-3">
+                                            <span class="font-bold">3:30 PM – Rhum Tour 🥃</span><br/>
+                                            Off to Topper's Rhum Distillery for tastings, rum cake, and vibes.<br/>
+                                            <a href="https://www.toppers.sx/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                                                👉 https://www.toppers.sx/
+                                            </a>
+                                        </p>
+                                        <p class="text-base md:text-lg text-gray-700">
+                                            <span class="font-bold">🏈 Sunday Night – Super Bowl Watch Party</span><br/>
+                                            We'll find a spot (or host at the villa) to eat, drink, and watch the game together. Jerseys welcome 😎🍗🍻
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-white/80 rounded-xl p-4 shadow-md">
+                                        <p class="font-black text-xl md:text-2xl text-blue-600 mb-2">MON | FEB 9</p>
+                                        <p class="font-bold text-base md:text-lg text-gray-800 mb-2">Beach + Explore Day 🌊☀️</p>
+                                        <p class="text-base md:text-lg text-gray-700 mb-3">Late start, beach time, or pool vibes.</p>
+                                        <p class="text-base md:text-lg text-gray-700 mb-3">
+                                            <span class="font-bold">✈️ Maho Beach (Plane Fly-Overs!)</span><br/>
+                                            Watch planes land right over your head — classic SXM experience.<br/>
+                                            <a href="https://www.sxm-guide.com/" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                                                👉 https://www.sxm-guide.com/
+                                            </a>
+                                        </p>
+                                        <p class="text-base md:text-lg text-gray-700">
+                                            <span class="font-bold">Optional: Loterie Farm</span> — hiking trails, jungle views, pool & bar 🍹🌴<br/>
+                                            <a href="https://www.loteriefarm.com" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">
+                                                👉 https://www.loteriefarm.com
+                                            </a>
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-gradient-to-r from-pink-200 via-purple-200 to-orange-200 rounded-xl p-4 shadow-lg border-4 border-yellow-400">
+                                        <p class="font-black text-xl md:text-2xl text-pink-700 mb-2">TUE | FEB 10 – 🎉 MY 50TH BIRTHDAY 🎉</p>
+                                        <p class="text-base md:text-lg text-gray-800 mb-3">
+                                            <span class="font-black">9:00 AM – Yacht Day 🛥️🍾</span><br/>
+                                            Sun, water, music, and full celebration mode. Details coming soon!
+                                        </p>
+                                        <p class="text-base md:text-lg text-gray-800">
+                                            <span class="font-black">7:00 PM – Private Chef Dinner 🍽️✨</span><br/>
+                                            Birthday dinner at the villa — dressy casual (cute, relaxed, island-chic). Think sundresses, linen, sandals, not heels you'll regret 😄🥂
+                                        </p>
+                                    </div>
+
+                                    <div class="bg-white/80 rounded-xl p-4 shadow-md">
+                                        <p class="font-black text-xl md:text-2xl text-orange-600 mb-2">WED | FEB 11</p>
+                                        <p class="font-bold text-base md:text-lg text-gray-800 mb-1">Private Breakfast + Departures ☕✈️</p>
+                                        <p class="text-base md:text-lg text-gray-700">One last meal together before heading home.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4 bg-white/60 rounded-xl p-4">
+                                    <p class="font-bold text-base md:text-lg text-gray-800 mb-2">Quick Notes:</p>
+                                    <ul class="text-base md:text-lg text-gray-700 space-y-1 ml-4">
+                                        <li>• Bring comfy shoes for ATV/hiking days</li>
+                                        <li>• Sunscreen + swimsuits are a must</li>
+                                        <li>• Come ready to relax, celebrate, and have FUN 💃🏽🕺🏽</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-wrap justify-center gap-4 text-lg md:text-xl text-gray-700 mb-6">
+                                <div class="flex items-center gap-2 bg-gradient-to-r from-orange-400 to-yellow-400 px-5 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform border-2 border-white">
+                                    <div class="w-7 h-7 text-white" id="sun-badge"></div>
+                                    <span class="font-black text-white">Tropical Paradise</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 px-5 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform border-2 border-white">
+                                    <div class="w-7 h-7 text-white" id="music-badge"></div>
+                                    <span class="font-black text-white">Epic Celebration</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-cyan-500 px-5 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform border-2 border-white">
+                                    <div class="w-7 h-7 text-white" id="waves-badge"></div>
+                                    <span class="font-black text-white">Beach & Ocean</span>
+                                </div>
+                                <div class="flex items-center gap-2 bg-gradient-to-r from-red-500 to-rose-500 px-5 py-3 rounded-full shadow-lg transform hover:scale-105 transition-transform border-2 border-white">
+                                    <div class="w-7 h-7 text-white" id="heart-badge"></div>
+                                    <span class="font-black text-white">Unforgettable</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 rounded-2xl p-6 shadow-2xl border-4 border-white mb-4 animate-pulse-glow">
+                            <p class="text-3xl md:text-5xl font-black text-white drop-shadow-lg">
+                                ✨ COME READY TO CELEBRATE, RELAX & HAVE FUN! ✨
+                            </p>
+                        </div>
+                        <p class="text-xl md:text-2xl font-bold text-white drop-shadow-lg opacity-90">
+                            🌴 Can't wait to make these memories with y'all! 🌴
+                        </p>
+                        <p class="text-lg md:text-xl font-bold text-yellow-200 drop-shadow-lg mt-2">
+                            💃🏽 Tiffany's 50th Birthday Extravaganza 🕺🏽
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Add icons
+        document.getElementById('trophy-left').appendChild(createIcon(icons.trophy, "w-full h-full"));
+        document.getElementById('trophy-right').appendChild(createIcon(icons.trophy, "w-full h-full"));
+        document.getElementById('crown-left').appendChild(createIcon(icons.crown, "w-full h-full"));
+        document.getElementById('crown-right').appendChild(createIcon(icons.crown, "w-full h-full"));
+        document.getElementById('sparkles-left').appendChild(createIcon(icons.sparkles, "w-full h-full"));
+        document.getElementById('crown-center').appendChild(createIcon(icons.crown, "w-full h-full"));
+        document.getElementById('sparkles-right').appendChild(createIcon(icons.sparkles, "w-full h-full"));
+        document.getElementById('anchor-icon').appendChild(createIcon(icons.anchor, "w-full h-full"));
+        document.getElementById('utensils-icon').appendChild(createIcon(icons.utensils, "w-full h-full"));
+        document.getElementById('sun-badge').appendChild(createIcon(icons.sun, "w-full h-full"));
+        document.getElementById('music-badge').appendChild(createIcon(icons.music, "w-full h-full"));
+        document.getElementById('waves-badge').appendChild(createIcon(icons.waves, "w-full h-full"));
+        document.getElementById('heart-badge').appendChild(createIcon(icons.heart, "w-full h-full"));
+        
+        document.getElementById('icon-0').appendChild(createIcon(icons.sun, "w-full h-full"));
+        document.getElementById('icon-1').appendChild(createIcon(icons.star, "w-full h-full"));
+        document.getElementById('icon-2').appendChild(createIcon(icons.zap, "w-full h-full"));
+        document.getElementById('icon-3').appendChild(createIcon(icons.sparkles, "w-full h-full"));
+
+        // Background icons
+        const bgIcons = document.getElementById('bg-icons');
+        const bgIconsHTML = `
+            <div class="absolute top-10 left-10 animate-float"><div class="w-16 h-16 text-green-300 opacity-40" id="bg-palm"></div></div>
+            <div class="absolute top-20 right-20 animate-spin-slow"><div class="w-24 h-24 text-yellow-300 opacity-50" id="bg-sun"></div></div>
+            <div class="absolute bottom-20 left-1/4 animate-float delay-100"><div class="w-14 h-14 text-blue-300 opacity-40" id="bg-anchor"></div></div>
+            <div class="absolute bottom-10 right-1/3 animate-pulse delay-200"><div class="w-16 h-16 text-red-300 opacity-40" id="bg-heart"></div></div>
+            <div class="absolute top-1/3 right-10 animate-float delay-300"><div class="w-16 h-16 text-cyan-300 opacity-40" id="bg-waves"></div></div>
+            <div class="absolute top-1/2 left-10 animate-bounce-slow"><div class="w-12 h-12 text-rose-300 opacity-40" id="bg-wine"></div></div>
+            <div class="absolute bottom-1/3 right-1/4 animate-spin-slow delay-400"><div class="w-14 h-14 text-yellow-200 opacity-50" id="bg-crown"></div></div>
+            <div class="absolute top-1/4 left-1/3 animate-ping"><div class="w-10 h-10 text-yellow-200 opacity-60" id="bg-sparkles1"></div></div>
+            <div class="absolute bottom-1/3 right-1/4 animate-ping delay-300"><div class="w-8 h-8 text-pink-200 opacity-60" id="bg-star"></div></div>
+            <div class="absolute top-1/2 right-1/3 animate-ping delay-500"><div class="w-10 h-10 text-orange-200 opacity-60" id="bg-zap"></div></div>
+        `;
+        bgIcons.innerHTML = bgIconsHTML;
+        
+        setTimeout(() => {
+            document.getElementById('bg-palm').appendChild(createIcon(icons.palmtree, "w-full h-full"));
+            document.getElementById('bg-sun').appendChild(createIcon(icons.sun, "w-full h-full"));
+            document.getElementById('bg-anchor').appendChild(createIcon(icons.anchor, "w-full h-full"));
+            document.getElementById('bg-heart').appendChild(createIcon(icons.heart, "w-full h-full"));
+            document.getElementById('bg-waves').appendChild(createIcon(icons.waves, "w-full h-full"));
+            document.getElementById('bg-wine').appendChild(createIcon(icons.wine, "w-full h-full"));
+            document.getElementById('bg-crown').appendChild(createIcon(icons.crown, "w-full h-full"));
+            document.getElementById('bg-sparkles1').appendChild(createIcon(icons.sparkles, "w-full h-full"));
+            document.getElementById('bg-star').appendChild(createIcon(icons.star, "w-full h-full"));
+            document.getElementById('bg-zap').appendChild(createIcon(icons.zap, "w-full h-full"));
+        }, 100);
+
+        // Start countdown
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
